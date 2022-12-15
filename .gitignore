@@ -1,0 +1,7 @@
+build/
+
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
