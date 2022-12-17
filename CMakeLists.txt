@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.14)
 
 project(lvim C)
 
-set(LVIM_VERSION_MAJOR 1)
-set(LVIM_VERSION_MINOR 2)
-set(LVIM_VERSION_PATCH 0)
+if(NOT DEFINED LVIM_BRANCH)
+  set(LVIM_BRANCH master)
+endif()
 
 # Fetch LunarVim repo
 
@@ -13,10 +13,12 @@ FetchContent_Declare(
   lvimRepo
   GIT_REPOSITORY https://github.com/LunarVim/LunarVim.git
   GIT_SHALLOW 1
-  GIT_TAG master
+  GIT_TAG ${LVIM_BRANCH}
 )
 FetchContent_MakeAvailable(lvimRepo)
 set(lvimRepo_SOURCE_DIR ${CMAKE_BINARY_DIR}/_deps/lvimrepo-src)
+
+include(cmake/GetVersion.cmake)
 
 # INSTALL
 
@@ -62,3 +64,5 @@ install(DIRECTORY
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
 
 add_subdirectory(cmake.packaging)
+
+unset(LVIM_BRANCH CACHE)
