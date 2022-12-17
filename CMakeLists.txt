@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.14)
 
 project(lvim C)
 
@@ -6,14 +6,26 @@ set(LVIM_VERSION_MAJOR 1)
 set(LVIM_VERSION_MINOR 2)
 set(LVIM_VERSION_PATCH 0)
 
+# Fetch LunarVim repo
+
+include(FetchContent)
+FetchContent_Declare(
+  lvimRepo
+  GIT_REPOSITORY https://github.com/LunarVim/LunarVim.git
+  GIT_SHALLOW 1
+  GIT_TAG master
+)
+FetchContent_MakeAvailable(lvimRepo)
+set(lvimRepo_SOURCE_DIR ${CMAKE_BINARY_DIR}/_deps/lvimrepo-src)
+
 # INSTALL
 
 include(GNUInstallDirs)
 
-configure_file(${CMAKE_SOURCE_DIR}/LICENSE ${CMAKE_BINARY_DIR}/LICENSE.txt)
+configure_file(${lvimRepo_SOURCE_DIR}/LICENSE ${CMAKE_BINARY_DIR}/LICENSE.txt)
 
 if(WIN32)
-  file(WRITE ${CMAKE_BINARY_DIR}/lvim.ps1
+  file(WRITE ${CMAKE_BINARY_DIR}/bin/lvim.ps1
     "#Requires -Version 7.1\n"
     "$ErrorActionPreference = \"Stop\"\n"
     "$env:XDG_DATA_HOME = $env:XDG_DATA_HOME ?? $env:APPDATA\n"
@@ -25,9 +37,9 @@ if(WIN32)
     "$env:LUNARVIM_BASE_DIR = $env:LUNARVIM_BASE_DIR ?? $(Resolve-Path \"$PSScriptRoot\\..\\${CMAKE_INSTALL_DATAROOTDIR}\\lunarvim\")\n"
     "nvim -u \"$env:LUNARVIM_BASE_DIR\\init.lua\" @args\n")
 
-  install(PROGRAMS ${CMAKE_BINARY_DIR}/lvim.ps1 DESTINATION ${CMAKE_INSTALL_BINDIR})
+  install(PROGRAMS ${CMAKE_BINARY_DIR}/bin/lvim.ps1 DESTINATION ${CMAKE_INSTALL_BINDIR})
 else()
-  file(WRITE ${CMAKE_BINARY_DIR}/lvim
+  file(WRITE ${CMAKE_BINARY_DIR}/bin/lvim
     "#!/usr/bin/env bash\n"
     "XDG_DATA_HOME=\"\${XDG_DATA_HOME:-\"$HOME/.local/share\"}\"\n"
     "XDG_CONFIG_HOME=\"\${XDG_CONFIG_HOME:-\"$HOME/.config\"}\"\n"
@@ -39,14 +51,14 @@ else()
     "export LUNARVIM_BASE_DIR=\"\${LUNARVIM_BASE_DIR:-$\"$ROOT_DIR/${CMAKE_INSTALL_DATAROOTDIR}/lunarvim\"}\"\n"
     "exec -a lvim nvim -u \"$LUNARVIM_BASE_DIR/init.lua\" \"$@\"\n")
 
-  install(PROGRAMS ${CMAKE_BINARY_DIR}/lvim DESTINATION ${CMAKE_INSTALL_BINDIR})
+  install(PROGRAMS ${CMAKE_BINARY_DIR}/bin/lvim DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()
 
-install(FILES ${CMAKE_SOURCE_DIR}/init.lua DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
+install(FILES ${lvimRepo_SOURCE_DIR}/init.lua DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
 install(DIRECTORY 
-    ${CMAKE_SOURCE_DIR}/lua
-    ${CMAKE_SOURCE_DIR}/ftdetect
-    ${CMAKE_SOURCE_DIR}/snapshots 
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
+  ${lvimRepo_SOURCE_DIR}/lua
+  ${lvimRepo_SOURCE_DIR}/ftdetect
+  ${lvimRepo_SOURCE_DIR}/snapshots 
+  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
 
 add_subdirectory(cmake.packaging)
