@@ -59,9 +59,15 @@ endif()
 install(FILES ${lvimRepo_SOURCE_DIR}/init.lua DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
 install(DIRECTORY 
   ${lvimRepo_SOURCE_DIR}/lua
-  ${lvimRepo_SOURCE_DIR}/ftdetect
   ${lvimRepo_SOURCE_DIR}/snapshots 
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
+
+# for backwards compability
+if(EXISTS "${lvimRepo_SOURCE_DIR}/ftdetect")
+install(DIRECTORY 
+  ${lvimRepo_SOURCE_DIR}/ftdetect
+  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
+endif()
 
 add_subdirectory(cmake.packaging)
 

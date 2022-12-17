@@ -2,7 +2,10 @@
 set -x
 set -e
 
-REPO_DIR="$(git rev-parse --show-toplevel)"
+
+REPO_DIR=$(readlink -f "$(dirname $(realpath "$0"))/..")
+LVIM_DIR="$REPO_DIR/build/_deps/lvimrepo-src"
+cd $REPO_DIR
 
 mkdir build/bin -p
 cd build
@@ -29,7 +32,7 @@ chmod +x linuxdeploy-x86_64.AppImage
 cat << 'EOF' > AppDir/AppRun
 #!/bin/bash
 unset ARGV0
-ROOT_DIR="$(dirname "$(readlink  -f "${0}")")"
+ROOT_DIR="$(dirname "$(readlink -f "${0}")")"
 PATH="$ROOT_DIR/usr/bin:$PATH"
 exec lvim ${@+"$@"}
 EOF
@@ -57,5 +60,5 @@ if [ -z "$ARCH" ]; then
 fi
 
 export OUTPUT=lvim.AppImage
-./linuxdeploy-x86_64.AppImage --appdir AppDir -d "$REPO_DIR/utils/desktop/lvim.desktop" -i "$REPO_DIR/utils/desktop/64x64/lvim.svg" --output appimage
+./linuxdeploy-x86_64.AppImage --appdir AppDir -d "$LVIM_DIR/utils/desktop/lvim.desktop" -i "$LVIM_DIR/utils/desktop/64x64/lvim.svg" --output appimage
 mv lvim.AppImage bin/
