@@ -20,4 +20,4 @@ SetEnv LUNARVIM_CACHE_DIR "$env:XDG_CACHE_HOME\lvim"
 
 SetEnv LUNARVIM_BASE_DIR $(Resolve-Path "$PSScriptRoot\..\CMAKE_INSTALL_DATAROOTDIR\lunarvim\")
 
-nvim -u "$env:LUNARVIM_BASE_DIR\init.lua\" @args
+nvim -u "$env:LUNARVIM_BASE_DIR\init.lua" @args
