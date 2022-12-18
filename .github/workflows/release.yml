@@ -112,6 +112,7 @@ jobs:
           $env:path += ";$(pwd)\\nvim-win64\\bin"
           cmake -B build
           cmake --build build --target package
+          cat D:/a/LunarVim-mono/LunarVim-mono/build/_CPack_Packages/win64/WIX/wix.log
       - uses: actions/upload-artifact@v3
         with:
           name: lvim-win64
