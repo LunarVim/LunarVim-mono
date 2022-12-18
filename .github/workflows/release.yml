@@ -107,9 +107,9 @@ jobs:
         run: |
           Invoke-WebRequest https://github.com/neovim/neovim/releases/download/stable/nvim-win64.zip -OutFile nvim-win64.zip
           Expand-Archive .\nvim-win64.zip -DestinationPath .
-          $env:path += ";$(pwd)\nvim-win64\bin"
       - name: build package
         run: |
+          $env:path += ";$(pwd)\\nvim-win64\\bin"
           cmake -B build
           cmake --build build --target package
       - uses: actions/upload-artifact@v3
