@@ -46,7 +46,7 @@ jobs:
         with:
           name: lvim-plugins
           path: |
-            build/packer.zip
+            build/xdg_root/share/lunarvim/site/pack/packer.zip
           retention-days: 1
 
   appimage:
