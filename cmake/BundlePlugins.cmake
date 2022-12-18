@@ -21,9 +21,9 @@ set(INIT_LUA_PATH ${lvimRepo_SOURCE_DIR}/init.lua)
 string(REPLACE "/" "${P_SEP}" INIT_LUA_PATH "${INIT_LUA_PATH}")
 
 message("downloading plugins...")
-message("nvim -u ${INIT_LUA_PATH} --headless -c autocmd User PackerComplete quitall -c PackerSync")
+message("nvim -u ${INIT_LUA_PATH} --headless -c autocmd User PackerComplete quitall -c PackerInstall")
 execute_process( 
-  COMMAND "nvim" "-u" "${INIT_LUA_PATH}" "--headless" "-c" "autocmd User PackerComplete quitall" "-c" "PackerSync"
+  COMMAND "nvim" "-u" "${INIT_LUA_PATH}" "--headless" "-c" "autocmd User PackerComplete quitall" "-c" "PackerInstall"
   TIMEOUT 300
   RESULT_VARIABLE exit_code
   OUTPUT_VARIABLE output
