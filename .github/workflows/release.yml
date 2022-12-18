@@ -33,12 +33,14 @@ jobs:
           cd build
           cpack
           printf 'version=%s\n' "$(cat version.txt)" >> $GITHUB_OUTPUT
+          zip plugins.zip plugins -r > /dev/null
       - uses: actions/upload-artifact@v3
         with:
           name: lvim-linux64
           path: |
             build/lvim-linux64.tar.gz
             build/lvim-linux64.deb
+            build/plugins.zip
           retention-days: 1
 
   appimage:
@@ -103,6 +105,9 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - uses: actions/download-artifact@v3
+        with:
+          name: lvim-linux64
       - name: Install neovim
         run: |
           Invoke-WebRequest https://github.com/neovim/neovim/releases/download/stable/nvim-win64.zip -OutFile nvim-win64.zip
@@ -111,8 +116,12 @@ jobs:
         run: |
           $env:path += ";$(pwd)\\nvim-win64\\bin"
           cmake -B build
+          ls
+          Remove-Item .\build\plugins -Recurse -Force
+          Expand-Archive .\plugins.zip -DestinationPath .
+          Copy-Item -Path .\plugins -Destination .\build\plugins -recurse -Force
           cmake --build build --target package
-          cat D:/a/LunarVim-mono/LunarVim-mono/build/_CPack_Packages/win64/WIX/wix.log
+          cat ./build/_CPack_Packages/win64/WIX/wix.log
       - uses: actions/upload-artifact@v3
         with:
           name: lvim-win64
