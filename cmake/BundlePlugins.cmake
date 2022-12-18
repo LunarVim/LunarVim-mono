@@ -11,9 +11,16 @@ set(ENV{LUNARVIM_BASE_DIR} ${lvimRepo_SOURCE_DIR})
 
 file(REMOVE_RECURSE ${XDG_ROOT})
 
+if(WIN32)
+  set(P_SEP "\\")
+else()
+  set(P_SEP "/")
+endif()
+
 message("downloading plugins...")
+message("nvim -u ${lvimRepo_SOURCE_DIR}${P_SEP}init.lua --headless -c autocmd User PackerComplete quitall -c PackerSync")
 execute_process( 
-  COMMAND "${CMAKE_BINARY_DIR}/bin/${LVIM_BIN_NAME}" "--headless" "-c" "autocmd User PackerComplete quitall" "-c" "PackerSync"
+  COMMAND "nvim" "-u" "${lvimRepo_SOURCE_DIR}${P_SEP}init.lua" "--headless" "-c" "autocmd User PackerComplete quitall" "-c" "PackerSync"
   TIMEOUT 300
   RESULT_VARIABLE exit_code
   OUTPUT_VARIABLE output
