@@ -33,6 +33,7 @@ execute_process(
 if(NOT exit_code EQUAL 0 )
   message(FATAL_ERROR "nvim output: ${exit_code} ${output} ${stderr}")
 else()
+  message("nvim output: ${exit_code} ${output} ${stderr}")
   message("download complete")
   install(DIRECTORY 
     "$ENV{LUNARVIM_RUNTIME_DIR}/site/pack/packer/"
