@@ -33,14 +33,15 @@ jobs:
           cd build
           cpack
           printf 'version=%s\n' "$(cat version.txt)" >> $GITHUB_OUTPUT
-          zip plugins.zip plugins -r > /dev/null
+          cd xdg_root/share/lunarvim/site/pack
+          zip packer.zip packer -r > /dev/null
       - uses: actions/upload-artifact@v3
         with:
           name: lvim-linux64
           path: |
             build/lvim-linux64.tar.gz
             build/lvim-linux64.deb
-            build/plugins.zip
+            build/packer.zip
           retention-days: 1
 
   appimage:
@@ -118,9 +119,9 @@ jobs:
           $env:path += ";$(pwd)\\nvim-win64\\bin"
           cmake -B build
           ls
-          Remove-Item .\build\plugins -Recurse -Force
-          Expand-Archive .\plugins.zip -DestinationPath .
-          Copy-Item -Path .\plugins -Destination .\build\plugins -recurse -Force
+          Remove-Item .\build\xdg_root\share\lunarvim\site\pack\packer -Recurse -Force
+          Expand-Archive .\packer.zip -DestinationPath .
+          Copy-Item -Path .\packer -Destination .\build\xdg_root\share\lunarvim\site\pack\packer -recurse -Force
           cmake --build build --target package
           cat ./build/_CPack_Packages/win64/WIX/wix.log
       - uses: actions/upload-artifact@v3
