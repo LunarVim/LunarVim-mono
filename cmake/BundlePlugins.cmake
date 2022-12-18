@@ -17,10 +17,13 @@ else()
   set(P_SEP "/")
 endif()
 
+set(INIT_LUA_PATH ${lvimRepo_SOURCE_DIR}/init.lua)
+string(REPLACE "/" "${P_SEP}" INIT_LUA_PATH "${INIT_LUA_PATH}")
+
 message("downloading plugins...")
-message("nvim -u ${lvimRepo_SOURCE_DIR}${P_SEP}init.lua --headless -c autocmd User PackerComplete quitall -c PackerSync")
+message("nvim -u ${INIT_LUA_PATH} --headless -c autocmd User PackerComplete quitall -c PackerSync")
 execute_process( 
-  COMMAND "nvim" "-u" "${lvimRepo_SOURCE_DIR}${P_SEP}init.lua" "--headless" "-c" "autocmd User PackerComplete quitall" "-c" "PackerSync"
+  COMMAND "nvim" "-u" "${INIT_LUA_PATH}" "--headless" "-c" "autocmd User PackerComplete quitall" "-c" "PackerSync"
   TIMEOUT 300
   RESULT_VARIABLE exit_code
   OUTPUT_VARIABLE output
