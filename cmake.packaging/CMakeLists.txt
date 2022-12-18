@@ -1,3 +1,6 @@
+# WIX needs an extension for the LICENSE file
+configure_file(${lvimRepo_SOURCE_DIR}/LICENSE ${CMAKE_BINARY_DIR}/LICENSE.txt)
+
 set(CPACK_VERBATIM_VARIABLES TRUE)
 set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_BINARY_DIR}/LICENSE.txt)
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "An IDE layer for Neovim with sane defaults. Completely free and community driven.")

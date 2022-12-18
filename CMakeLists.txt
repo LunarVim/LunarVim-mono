@@ -12,8 +12,10 @@ include(FetchContent)
 Set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(
   lvimRepo
-  GIT_REPOSITORY https://github.com/LunarVim/LunarVim.git
-  GIT_TAG ${LVIM_BRANCH}
+  # GIT_REPOSITORY https://github.com/LunarVim/LunarVim.git
+  # GIT_TAG ${LVIM_BRANCH}
+  GIT_REPOSITORY https://github.com/LostNeophyte/LunarVim.git
+  GIT_TAG lvim-mono-integration
   GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(lvimRepo)
@@ -25,8 +27,6 @@ include(cmake/GetVersion.cmake)
 
 include(GNUInstallDirs)
 
-configure_file(${lvimRepo_SOURCE_DIR}/LICENSE ${CMAKE_BINARY_DIR}/LICENSE.txt)
-
 if(WIN32)
   set(LVIM_BIN_NAME lvim.ps1)
 else()
@@ -35,7 +35,12 @@ endif()
 
 file(READ ${CMAKE_SOURCE_DIR}/bin/${LVIM_BIN_NAME} FILE_CONTENTS)
 string(REPLACE "CMAKE_INSTALL_DATAROOTDIR" "${CMAKE_INSTALL_DATAROOTDIR}" FILE_CONTENTS "${FILE_CONTENTS}")
-file(WRITE ${CMAKE_BINARY_DIR}/bin/${LVIM_BIN_NAME} "${FILE_CONTENTS}")
+file(WRITE ${CMAKE_BINARY_DIR}/tmp/${LVIM_BIN_NAME} "${FILE_CONTENTS}")
+file(
+  COPY ${CMAKE_BINARY_DIR}/tmp/${LVIM_BIN_NAME}
+  DESTINATION ${CMAKE_BINARY_DIR}/bin/
+  FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+  )
 
 install(PROGRAMS ${CMAKE_BINARY_DIR}/bin/${LVIM_BIN_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(FILES ${lvimRepo_SOURCE_DIR}/init.lua DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
@@ -48,8 +53,25 @@ install(DIRECTORY
 if(EXISTS "${lvimRepo_SOURCE_DIR}/ftdetect")
 install(DIRECTORY 
   ${lvimRepo_SOURCE_DIR}/ftdetect
+  ${lvimRepo_SOURCE_DIR}/ftplugin
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
 endif()
+
+# bake the lvim version into the code  TODO: find a better way to do this
+file(READ ${lvimRepo_SOURCE_DIR}/lua/lvim/utils/git.lua FILE_CONTENTS)
+string(REPLACE 
+  "local current_branch = M.get_lvim_branch()"
+  "local current_branch = \"${LVIM_VERSION}\"
+  if true then
+    return current_branch
+  end"
+  FILE_CONTENTS "${FILE_CONTENTS}")
+file(WRITE ${CMAKE_BINARY_DIR}/git.lua "${FILE_CONTENTS}")
+install(FILES 
+  ${CMAKE_BINARY_DIR}/git.lua
+  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim/lua/lvim/utils/)
+
+include(cmake/BundlePlugins.cmake)
 
 add_subdirectory(cmake.packaging)
 
