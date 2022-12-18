@@ -125,8 +125,6 @@ jobs:
           cmake -B build
           ls
           Remove-Item .\build\xdg_root\share\lunarvim\site\pack\packer -Recurse -Force
-          Expand-Archive .\lvim-plugins.zip -DestinationPath .
-          ls
           Expand-Archive .\packer.zip -DestinationPath .
           Copy-Item -Path .\packer -Destination .\build\xdg_root\share\lunarvim\site\pack\packer -recurse -Force
           cmake --build build --target package
