@@ -28,7 +28,7 @@ jobs:
       - name: Build release
         id: build
         run: |
-          cmake -B build -D PACKAGE_FOR_WINDOWS
+          cmake -B build
           cd build
           cpack
           printf 'version=%s\n' "$(cat version.txt)" >> $GITHUB_OUTPUT
@@ -54,7 +54,7 @@ jobs:
       - name: Build release
         id: build
         run: |
-          cmake -B build
+          cmake -B build -D PACKAGE_FOR_WINDOWS=1
           cd build
           cpack
       - uses: actions/upload-artifact@v3
