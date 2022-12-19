@@ -41,6 +41,7 @@ install(PROGRAMS ${CMAKE_BINARY_DIR}/bin/${LVIM_BIN_NAME} DESTINATION ${CMAKE_IN
 install(FILES ${lvimRepo_SOURCE_DIR}/init.lua DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
 install(DIRECTORY 
   ${lvimRepo_SOURCE_DIR}/lua
+  ${lvimRepo_SOURCE_DIR}/utils
   ${lvimRepo_SOURCE_DIR}/snapshots 
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
 
