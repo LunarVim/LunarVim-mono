@@ -18,6 +18,9 @@ SetEnv LUNARVIM_RUNTIME_DIR "$env:XDG_DATA_HOME\lunarvim"
 SetEnv LUNARVIM_CONFIG_DIR "$env:XDG_CONFIG_HOME\lvim"
 SetEnv LUNARVIM_CACHE_DIR "$env:XDG_CACHE_HOME\lvim"
 
-SetEnv LUNARVIM_BASE_DIR $(Resolve-Path "$PSScriptRoot\..\CMAKE_INSTALL_DATAROOTDIR\lunarvim")
+if ( -Not (Test-Path env:LUNARVIM_BASE_DIR ))
+{
+  SetEnv LUNARVIM_BASE_DIR $(Resolve-Path "$PSScriptRoot\..\CMAKE_INSTALL_DATAROOTDIR\lunarvim")
+}
 
 nvim -u "$env:LUNARVIM_BASE_DIR\init.lua" @args
