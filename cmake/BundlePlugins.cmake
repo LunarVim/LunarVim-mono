@@ -24,7 +24,9 @@ if(WIN32)
   string(REPLACE "/" "\\" ENV{LUNARVIM_CONFIG_DIR} "$ENV{LUNARVIM_CONFIG_DIR}")
   string(REPLACE "/" "\\" ENV{LUNARVIM_CACHE_DIR} "$ENV{LUNARVIM_CACHE_DIR}")
   string(REPLACE "/" "\\" ENV{LUNARVIM_BASE_DIR} "$ENV{LUNARVIM_BASE_DIR}")
+  message("set")
 endif()
+  message("$ENV{LUNARVIM_BASE_DIR}")
 
 
 message("downloading plugins...")
