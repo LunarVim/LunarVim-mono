@@ -49,6 +49,6 @@ if(NOT exit_code EQUAL 0 )
 else()
   message("${output} ${stderr}")
   install(DIRECTORY 
-    "$ENV{LUNARVIM_RUNTIME_DIR}/site/pack/packer/"
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim/plugins/)
+    ${CMAKE_BINARY_DIR}/plugins
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim/)
 endif()
