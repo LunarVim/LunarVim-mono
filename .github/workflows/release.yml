@@ -39,6 +39,13 @@ jobs:
             build/lvim-linux64.tar.gz
             build/lvim-linux64.deb
           retention-days: 1
+      - uses: actions/upload-artifact@v3
+        with:
+          name: lvim-win64
+          path: |
+            build/lvim-win64.exe
+            build/lvim-win64.zip
+          retention-days: 1
 
   appimage:
     runs-on: ubuntu-20.04
@@ -95,33 +102,8 @@ jobs:
           path: build/lvim-macos.tar.gz
           retention-days: 1
 
-  windows:
-    runs-on: windows-2022
-    name: windows (MSVC_64)
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Install neovim
-        run: |
-          Invoke-WebRequest https://github.com/neovim/neovim/releases/download/stable/nvim-win64.zip -OutFile nvim-win64.zip
-          Expand-Archive .\nvim-win64.zip -DestinationPath .
-      - name: build package
-        run: |
-          $env:path += ";$(pwd)\\nvim-win64\\bin"
-          cmake -B build
-          cmake --build build --target package
-          cat build\_CPack_Packages\win64\WIX\wix.log
-      - uses: actions/upload-artifact@v3
-        with:
-          name: lvim-win64
-          path: |
-            build/lvim-win64.msi
-            build/lvim-win64.zip
-          retention-days: 1
-
   publish:
-    needs: [linux, appimage, macOS, windows]
+    needs: [linux, appimage, macOS]
     runs-on: ubuntu-latest
     env:
       GH_REPO: ${{ github.repository }}
@@ -182,8 +164,8 @@ jobs:
           cd ./lvim-win64
           sha256sum lvim-win64.zip > lvim-win64.zip.sha256sum
           echo "SHA_WIN_64_ZIP=$(cat lvim-win64.zip.sha256sum)" >> $GITHUB_ENV
-          sha256sum lvim-win64.msi > lvim-win64.msi.sha256sum
-          echo "SHA_WIN_64_MSI=$(cat lvim-win64.msi.sha256sum)" >> $GITHUB_ENV
+          sha256sum lvim-win64.exe > lvim-win64.exe.sha256sum
+          echo "SHA_WIN_64_EXE=$(cat lvim-win64.exe.sha256sum)" >> $GITHUB_ENV
       - name: Publish release
         env:
           LVIM_VERSION: ${{ needs.linux.outputs.version }}
