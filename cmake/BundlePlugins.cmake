@@ -9,7 +9,6 @@ set(LUNARVIM_CACHE_DIR ${LVIM_XDG_CACHE_HOME}/lvim)
 
 set(LUNARVIM_BASE_DIR ${lvimRepo_SOURCE_DIR})
 
-
 set(INIT_LUA_PATH ${lvimRepo_SOURCE_DIR}/init.lua)
 
 if(WIN32)
@@ -37,7 +36,7 @@ message("downloading plugins...")
 message("nvim -u ${INIT_LUA_PATH} --headless -c autocmd User PackerComplete quitall -c PackerInstall")
 execute_process( 
   COMMAND "nvim" "-u" "${INIT_LUA_PATH}" "--headless" "-c" "autocmd User PackerComplete quitall" "-c" "PackerInstall"
-  TIMEOUT 40
+  TIMEOUT 300
   RESULT_VARIABLE exit_code
   OUTPUT_VARIABLE output
   ERROR_VARIABLE stderr
