@@ -13,7 +13,7 @@ on:
 
 jobs:
   linux:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     outputs:
       version: ${{ steps.build.outputs.version }}
     steps:
@@ -41,7 +41,7 @@ jobs:
           retention-days: 1
 
   windows:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
         with:
@@ -67,9 +67,9 @@ jobs:
           retention-days: 1
 
   appimage:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     container:
-      image: ubuntu:20.04
+      image: ubuntu:22.04
       options: --privileged # Privileged mode is needed to load fuse module.
     steps:
       - name: Prepare container
