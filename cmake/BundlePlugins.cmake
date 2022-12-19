@@ -1,48 +1,43 @@
 set(XDG_ROOT ${CMAKE_BINARY_DIR}/xdg_root)
-set(ENV{XDG_DATA_HOME} ${XDG_ROOT}/share)
-set(ENV{XDG_CONFIG_HOME} ${XDG_ROOT}/.config)
-set(ENV{XDG_CACHE_HOME} ${XDG_ROOT}/.cache)
+set(LVIM_XDG_DATA_HOME ${XDG_ROOT}/share)
+set(LVIM_XDG_CONFIG_HOME ${XDG_ROOT}/.config)
+set(LVIM_XDG_CACHE_HOME ${XDG_ROOT}/.cache)
 
-set(ENV{LUNARVIM_RUNTIME_DIR} $ENV{XDG_DATA_HOME}/lunarvim)
-set(ENV{LUNARVIM_CONFIG_DIR} $ENV{XDG_CONFIG_HOME}/lvim)
-set(ENV{LUNARVIM_CACHE_DIR} $ENV{XDG_CACHE_HOME}/lvim)
+set(LUNARVIM_RUNTIME_DIR ${LVIM_XDG_DATA_HOME}/lunarvim)
+set(LUNARVIM_CONFIG_DIR ${LVIM_XDG_CONFIG_HOME}/lvim)
+set(LUNARVIM_CACHE_DIR ${LVIM_XDG_CACHE_HOME}/lvim)
 
-set(ENV{LUNARVIM_BASE_DIR} ${lvimRepo_SOURCE_DIR})
+set(LUNARVIM_BASE_DIR ${lvimRepo_SOURCE_DIR})
 
-file(REMOVE_RECURSE ${XDG_ROOT})
 
 set(INIT_LUA_PATH ${lvimRepo_SOURCE_DIR}/init.lua)
 
-file(WRITE "$ENV{LUNARVIM_CONFIG_DIR}/config.lua" "${LVIM_VERSION}")
-
 if(WIN32)
   string(REPLACE "/" "\\" INIT_LUA_PATH "${INIT_LUA_PATH}")
-  string(REPLACE "/" "\\" ENV{XDG_DATA_HOME} "$ENV{XDG_DATA_HOME}")
-  string(REPLACE "/" "\\" ENV{XDG_CONFIG_HOME} "$ENV{XDG_CONFIG_HOME}")
-  string(REPLACE "/" "\\" ENV{XDG_CACHE_HOME} "$ENV{XDG_CACHE_HOME}")
-  string(REPLACE "/" "\\" ENV{LUNARVIM_RUNTIME_DIR} "$ENV{LUNARVIM_RUNTIME_DIR}")
-  string(REPLACE "/" "\\" ENV{LUNARVIM_CONFIG_DIR} "$ENV{LUNARVIM_CONFIG_DIR}")
-  string(REPLACE "/" "\\" ENV{LUNARVIM_CACHE_DIR} "$ENV{LUNARVIM_CACHE_DIR}")
-  string(REPLACE "/" "\\" ENV{LUNARVIM_BASE_DIR} "$ENV{LUNARVIM_BASE_DIR}")
-  message("set")
+  string(REPLACE "/" "\\" LVIM_XDG_DATA_HOME "${LVIM_XDG_DATA_HOME}")
+  string(REPLACE "/" "\\" LVIM_XDG_CONFIG_HOME "${LVIM_XDG_CONFIG_HOME}")
+  string(REPLACE "/" "\\" LVIM_XDG_CACHE_HOME "${LVIM_XDG_CACHE_HOME}")
+  string(REPLACE "/" "\\" LUNARVIM_RUNTIME_DIR "${LUNARVIM_RUNTIME_DIR}")
+  string(REPLACE "/" "\\" LUNARVIM_CONFIG_DIR "${LUNARVIM_CONFIG_DIR}")
+  string(REPLACE "/" "\\" LUNARVIM_CACHE_DIR "${LUNARVIM_CACHE_DIR}")
+  string(REPLACE "/" "\\" LUNARVIM_BASE_DIR "${LUNARVIM_BASE_DIR}")
 endif()
-message("${INIT_LUA_PATH}")
-message("$ENV{LUNARVIM_BASE_DIR}")
 
+set(ENV{XDG_DATA_HOME} "${XDG_DATA_HOME}")
+set(ENV{XDG_CONFIG_HOME} "${XDG_CONFIG_HOME}")
+set(ENV{XDG_CACHE_HOME} "${XDG_CACHE_HOME}")
+set(ENV{LUNARVIM_RUNTIME_DIR} "${LUNARVIM_RUNTIME_DIR}")
+set(ENV{LUNARVIM_CONFIG_DIR} "${LUNARVIM_CONFIG_DIR}")
+set(ENV{LUNARVIM_CACHE_DIR} "${LUNARVIM_CACHE_DIR}")
+set(ENV{LUNARVIM_BASE_DIR} "${LUNARVIM_BASE_DIR}")
+
+file(REMOVE_RECURSE ${XDG_ROOT})
 
 message("downloading plugins...")
 message("nvim -u ${INIT_LUA_PATH} --headless -c autocmd User PackerComplete quitall -c PackerInstall")
 execute_process( 
-  COMMAND "nvim" "-u" "${INIT_LUA_PATH}" "--headless" "-c" "quitall"
-  TIMEOUT 20
-  RESULT_VARIABLE exit_code
-  OUTPUT_VARIABLE output
-  ERROR_VARIABLE stderr
-  OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-execute_process( 
-  COMMAND "nvim" "-u" "${INIT_LUA_PATH}" "--headless" "-c" "PackerInstall"
-  TIMEOUT 60
+  COMMAND "nvim" "-u" "${INIT_LUA_PATH}" "--headless" "-c" "autocmd User PackerComplete quitall" "-c" "PackerInstall"
+  TIMEOUT 40
   RESULT_VARIABLE exit_code
   OUTPUT_VARIABLE output
   ERROR_VARIABLE stderr
