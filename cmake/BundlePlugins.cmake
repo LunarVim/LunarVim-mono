@@ -26,7 +26,8 @@ if(WIN32)
   string(REPLACE "/" "\\" ENV{LUNARVIM_BASE_DIR} "$ENV{LUNARVIM_BASE_DIR}")
   message("set")
 endif()
-  message("$ENV{LUNARVIM_BASE_DIR}")
+message("${INIT_LUA_PATH}")
+message("$ENV{LUNARVIM_BASE_DIR}")
 
 
 message("downloading plugins...")
