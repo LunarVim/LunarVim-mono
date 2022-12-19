@@ -56,7 +56,7 @@ jobs:
         run: |
           cmake -B build -D PACKAGE_FOR_WINDOWS=1
           cd build
-          cpack
+          cpack | true
           cat _CPack_Packages/Linux/NSIS64/NSISOutput.log
       - uses: actions/upload-artifact@v3
         with:
