@@ -28,7 +28,7 @@ jobs:
       - name: Build release
         id: build
         run: |
-          cmake -B build
+          cmake -B build -D PACKAGE_FOR_WINDOWS
           cd build
           cpack
           printf 'version=%s\n' "$(cat version.txt)" >> $GITHUB_OUTPUT
@@ -39,6 +39,24 @@ jobs:
             build/lvim-linux64.tar.gz
             build/lvim-linux64.deb
           retention-days: 1
+
+  windows:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: |
+          sudo add-apt-repository ppa:neovim-ppa/unstable
+          sudo apt-get update
+          sudo apt-get install -y cmake neovim
+      - name: Build release
+        id: build
+        run: |
+          cmake -B build
+          cd build
+          cpack
       - uses: actions/upload-artifact@v3
         with:
           name: lvim-win64
@@ -103,7 +121,7 @@ jobs:
           retention-days: 1
 
   publish:
-    needs: [linux, appimage, macOS]
+    needs: [linux, windows, appimage, macOS]
     runs-on: ubuntu-latest
     env:
       GH_REPO: ${{ github.repository }}

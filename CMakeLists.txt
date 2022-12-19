@@ -27,7 +27,7 @@ include(cmake/GetVersion.cmake)
 
 include(GNUInstallDirs)
 
-if(WIN32)
+if(PACKAGE_FOR_WINDOWS OR WIN32)
   set(LVIM_BIN_NAME lvim.ps1)
 else()
   set(LVIM_BIN_NAME lvim)
