@@ -7,7 +7,7 @@ set(LUNARVIM_CONFIG_DIR ${LVIM_XDG_CONFIG_HOME}/lvim)
 set(LUNARVIM_CACHE_DIR ${LVIM_XDG_CACHE_HOME}/lvim)
 set(LUNARVIM_BASE_DIR ${lvimRepo_SOURCE_DIR})
 
-file(REMOVE_RECURSE ${XDG_ROOT})
+file(REMOVE_RECURSE ${XDG_ROOT} ${CMAKE_BINARY_DIR}/plugins)
 
 set(GEN_PLUGINS_INIT_PATH ${CMAKE_SOURCE_DIR}/scripts/gen_plugins_init.lua)
   
@@ -29,6 +29,7 @@ set(ENV{LUNARVIM_RUNTIME_DIR} "${LUNARVIM_RUNTIME_DIR}")
 set(ENV{LUNARVIM_CONFIG_DIR} "${LUNARVIM_CONFIG_DIR}")
 set(ENV{LUNARVIM_CACHE_DIR} "${LUNARVIM_CACHE_DIR}")
 set(ENV{LUNARVIM_BASE_DIR} "${LUNARVIM_BASE_DIR}")
+set(ENV{CMAKE_BINARY_DIR} "${CMAKE_BINARY_DIR}")
 set(ENV{LVIM_TEST_ENV} "true")
 
 set(DOWNLOAD_PLUGINS_CMD "nvim" "-u" "${GEN_PLUGINS_INIT_PATH}" "--headless")
@@ -44,11 +45,9 @@ execute_process(
   OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 if(NOT exit_code EQUAL 0 )
-  # message(FATAL_ERROR "nvim output: ${exit_code} ${output} ${stderr}")
-  message("nvim output: ${exit_code} ${output} ${stderr}")
+  message(FATAL_ERROR "${exit_code} ${output} ${stderr}")
 else()
-  message("nvim output: ${exit_code} ${output} ${stderr}")
-  message("download complete")
+  message("${output} ${stderr}")
   install(DIRECTORY 
     "$ENV{LUNARVIM_RUNTIME_DIR}/site/pack/packer/"
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim/plugins/)
