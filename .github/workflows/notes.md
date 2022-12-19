@@ -1,4 +1,3 @@
-
 ```
 ${TAG_NAME}/${LVIM_VERSION}
 ```
@@ -11,12 +10,11 @@ ${TAG_NAME}/${LVIM_VERSION}
 
 1. Download **lvim-win64.zip**
 2. Extract the zip.
-3. Run `lvim-qt.exe`
 
 #### MSI
 
-1. Download **lvim-win64.msi**
-2. Run the MSI
+1. Download **lvim-win64.exe**
+2. Run the exe
 
 ### macOS
 
@@ -40,6 +38,7 @@ ${TAG_NAME}/${LVIM_VERSION}
 3. Run `lvim`
 
 #### AppImage
+
 1. Download **lvim.appimage**
 2. Run `chmod u+x lvim.appimage && ./lvim.appimage`
    - If your system does not have FUSE you can [extract the appimage](https://github.com/AppImage/AppImageKit/wiki/FUSE#type-2-appimage):
@@ -56,5 +55,5 @@ ${SHA_LINUX_64_DEB}
 ${SHA_APP_IMAGE}
 ${SHA_MACOS}
 ${SHA_WIN_64_ZIP}
-${SHA_WIN_64_MSI}
+${SHA_WIN_64_EXE}
 ```

@@ -9,24 +9,13 @@ set(CPACK_PACKAGE_VERSION_MAJOR ${LVIM_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${LVIM_VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${LVIM_VERSION_PATCH})
 
-if(WIN32)
+if(PACKAGE_FOR_WINDOWS OR WIN32)
   set(CPACK_PACKAGE_FILE_NAME "lvim-win64")
-  set(CPACK_GENERATOR ZIP WIX)
+  set(CPACK_GENERATOR ZIP NSIS64)
 
-  # WIX
-  # CPACK_WIX_UPGRADE_GUID should be set, but should never change.
-  # CPACK_WIX_PRODUCT_GUID should not be set (leave as default to auto-generate).
-
-  # The following guid is just a randomly generated guid that's been pasted here.
-  # It has no special meaning other than to supply it to WIX.
-  set(CPACK_WIX_UPGRADE_GUID "f11fd72c-36ed-4f9d-8eff-dbf0aec7e981")
-  set(CPACK_WIX_PRODUCT_ICON ${CMAKE_CURRENT_LIST_DIR}/lvim.ico)
-
-  # We use a wix patch to add further options to the installer. At present, it's just to add lvim to the path
-  # on installation, however, it can be extended.
-  # See: https://cmake.org/cmake/help/v3.7/module/CPackWIX.html#variable:CPACK_WIX_PATCH_FILE
-  list(APPEND CPACK_WIX_EXTENSIONS WixUtilExtension)
-  list(APPEND CPACK_WIX_PATCH_FILE ${CMAKE_CURRENT_LIST_DIR}/WixPatch.xml)
+  SET(CPACK_NSIS_MODIFY_PATH ON)
+  set(CPACK_NSIS_MUI_ICON ${CMAKE_CURRENT_LIST_DIR}/lvim.ico)
+  set(CPACK_NSIS_MUI_UNIICON ${CMAKE_CURRENT_LIST_DIR}/lvim.ico)
 elseif(APPLE)
   set(CPACK_PACKAGE_FILE_NAME "lvim-macos")
   set(CPACK_GENERATOR TGZ)

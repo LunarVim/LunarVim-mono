@@ -11,10 +11,9 @@ on:
   push:
     branches: ["release-[0-9].[0-9]**"]
 
-# Build on the oldest supported images, so we have broader compatibility
 jobs:
   linux:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     outputs:
       version: ${{ steps.build.outputs.version }}
     steps:
@@ -33,8 +32,6 @@ jobs:
           cd build
           cpack
           printf 'version=%s\n' "$(cat version.txt)" >> $GITHUB_OUTPUT
-          cd xdg_root/share/lunarvim/site/pack
-          zip packer.zip packer -r > /dev/null
       - uses: actions/upload-artifact@v3
         with:
           name: lvim-linux64
@@ -42,17 +39,36 @@ jobs:
             build/lvim-linux64.tar.gz
             build/lvim-linux64.deb
           retention-days: 1
+
+  windows:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: |
+          sudo add-apt-repository ppa:neovim-ppa/unstable
+          sudo apt-get update
+          sudo apt-get install -y cmake neovim nsis
+      - name: Build release
+        id: build
+        run: |
+          cmake -B build -D PACKAGE_FOR_WINDOWS=1
+          cd build
+          cpack
       - uses: actions/upload-artifact@v3
         with:
-          name: lvim-plugins
+          name: lvim-win64
           path: |
-            build/xdg_root/share/lunarvim/site/pack/packer.zip
+            build/lvim-win64.exe
+            build/lvim-win64.zip
           retention-days: 1
 
   appimage:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     container:
-      image: ubuntu:20.04
+      image: ubuntu:22.04
       options: --privileged # Privileged mode is needed to load fuse module.
     steps:
       - name: Prepare container
@@ -83,7 +99,7 @@ jobs:
           retention-days: 1
 
   macOS:
-    runs-on: macos-11
+    runs-on: macos-12
     steps:
       - uses: actions/checkout@v3
         with:
@@ -91,7 +107,7 @@ jobs:
       - name: Install brew packages
         run: |
           brew update --quiet
-          brew install cmake neovim
+          brew install neovim
       - name: Build release
         id: build
         run: |
@@ -104,41 +120,8 @@ jobs:
           path: build/lvim-macos.tar.gz
           retention-days: 1
 
-  windows:
-    needs: linux
-    runs-on: windows-2019
-    name: windows (MSVC_64)
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: actions/download-artifact@v3
-        with:
-          name: lvim-plugins
-      - name: Install neovim
-        run: |
-          Invoke-WebRequest https://github.com/neovim/neovim/releases/download/stable/nvim-win64.zip -OutFile nvim-win64.zip
-          Expand-Archive .\nvim-win64.zip -DestinationPath .
-      - name: build package
-        run: |
-          $env:path += ";$(pwd)\\nvim-win64\\bin"
-          cmake -B build
-          ls
-          Remove-Item .\build\xdg_root\share\lunarvim\site\pack\packer -Recurse -Force
-          Expand-Archive .\packer.zip -DestinationPath .
-          Copy-Item -Path .\packer -Destination .\build\xdg_root\share\lunarvim\site\pack\packer -recurse -Force
-          cmake --build build --target package
-          cat ./build/_CPack_Packages/win64/WIX/wix.log
-      - uses: actions/upload-artifact@v3
-        with:
-          name: lvim-win64
-          path: |
-            build/lvim-win64.msi
-            build/lvim-win64.zip
-          retention-days: 1
-
   publish:
-    needs: [linux, appimage, macOS, windows]
+    needs: [linux, windows, appimage, macOS]
     runs-on: ubuntu-latest
     env:
       GH_REPO: ${{ github.repository }}
@@ -199,8 +182,8 @@ jobs:
           cd ./lvim-win64
           sha256sum lvim-win64.zip > lvim-win64.zip.sha256sum
           echo "SHA_WIN_64_ZIP=$(cat lvim-win64.zip.sha256sum)" >> $GITHUB_ENV
-          sha256sum lvim-win64.msi > lvim-win64.msi.sha256sum
-          echo "SHA_WIN_64_MSI=$(cat lvim-win64.msi.sha256sum)" >> $GITHUB_ENV
+          sha256sum lvim-win64.exe > lvim-win64.exe.sha256sum
+          echo "SHA_WIN_64_EXE=$(cat lvim-win64.exe.sha256sum)" >> $GITHUB_ENV
       - name: Publish release
         env:
           LVIM_VERSION: ${{ needs.linux.outputs.version }}
