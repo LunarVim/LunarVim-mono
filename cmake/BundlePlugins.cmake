@@ -22,7 +22,7 @@ if(WIN32)
   string(REPLACE "/" "\\" LUNARVIM_CONFIG_DIR "${LUNARVIM_CONFIG_DIR}")
   string(REPLACE "/" "\\" LUNARVIM_CACHE_DIR "${LUNARVIM_CACHE_DIR}")
   string(REPLACE "/" "\\" LUNARVIM_BASE_DIR "${LUNARVIM_BASE_DIR}")
-  set(DOWNLOAD_PLUGINS_CMD "pwsh" "-c" "${LVIM_BIN_PATH} --headless -c lua =lvim.plugins -c 'autocmd User PackerComplete quitall' -c PackerInstall")
+  set(DOWNLOAD_PLUGINS_CMD "pwsh" "-c" "${LVIM_BIN_PATH} --headless -c 'lua =lvim.plugins' -c 'autocmd User PackerComplete quitall' -c PackerInstall")
 endif()
 
 set(ENV{XDG_DATA_HOME} "${XDG_DATA_HOME}")
