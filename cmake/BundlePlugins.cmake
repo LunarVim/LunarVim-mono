@@ -29,7 +29,7 @@ message("downloading plugins...")
 message("nvim -u ${INIT_LUA_PATH} --headless -c autocmd User PackerComplete quitall -c PackerInstall")
 execute_process( 
   COMMAND "nvim" "-u" "${INIT_LUA_PATH}" "--headless" "-c" "autocmd User PackerComplete quitall" "-c" "PackerInstall"
-  TIMEOUT 50
+  TIMEOUT 100
   RESULT_VARIABLE exit_code
   OUTPUT_VARIABLE output
   ERROR_VARIABLE stderr

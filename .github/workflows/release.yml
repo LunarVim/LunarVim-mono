@@ -113,10 +113,10 @@ jobs:
           cmake -B build
           # cmake --build build --target package
           ls .\build\xdg_root\share\lunarvim\site\pack\packer
-          ls .\build\xdg_root\.cache
+          ls .\build\xdg_root\.cache\lvim
           ls .\build\xdg_root\share\lunarvim\site\pack\packer\start
           ls .\build\xdg_root\share\lunarvim\site\pack\packer\opt
-          cat .\build\xdg_root\.cache\packer.nvim.log
+          cat .\build\xdg_root\.cache\lvim\packer.nvim.log
       - uses: actions/upload-artifact@v3
         with:
           name: lvim-win64
