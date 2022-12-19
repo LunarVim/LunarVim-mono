@@ -9,10 +9,10 @@ set(LUNARVIM_CACHE_DIR ${LVIM_XDG_CACHE_HOME}/lvim)
 
 set(LUNARVIM_BASE_DIR ${lvimRepo_SOURCE_DIR})
 
-set(INIT_LUA_PATH ${lvimRepo_SOURCE_DIR}/init.lua)
+set(LVIM_BIN_PATH ${CMAKE_BINARY_DIR}/bin/${LVIM_BIN_NAME})
 
 if(WIN32)
-  string(REPLACE "/" "\\" INIT_LUA_PATH "${INIT_LUA_PATH}")
+  string(REPLACE "/" "\\" LVIM_BIN_PATH "${LVIM_BIN_PATH}")
   string(REPLACE "/" "\\" LVIM_XDG_DATA_HOME "${LVIM_XDG_DATA_HOME}")
   string(REPLACE "/" "\\" LVIM_XDG_CONFIG_HOME "${LVIM_XDG_CONFIG_HOME}")
   string(REPLACE "/" "\\" LVIM_XDG_CACHE_HOME "${LVIM_XDG_CACHE_HOME}")
@@ -33,9 +33,9 @@ set(ENV{LUNARVIM_BASE_DIR} "${LUNARVIM_BASE_DIR}")
 file(REMOVE_RECURSE ${XDG_ROOT})
 
 message("downloading plugins...")
-message("nvim -u ${INIT_LUA_PATH} --headless -c autocmd User PackerComplete quitall -c PackerInstall")
+message("${LVIM_BIN_PATH} --headless -c autocmd User PackerComplete quitall -c PackerInstall")
 execute_process( 
-  COMMAND "${CMAKE_BINARY_DIR}/bin/${LVIM_BIN_NAME}" "--headless" "-c" "lua =lvim.plugins" "-c" "autocmd User PackerComplete quitall" "-c" "PackerInstall"
+  COMMAND "${LVIM_BIN_PATH}" "--headless" "-c" "lua =lvim.plugins" "-c" "autocmd User PackerComplete quitall" "-c" "PackerInstall"
   TIMEOUT 300
   RESULT_VARIABLE exit_code
   OUTPUT_VARIABLE output
