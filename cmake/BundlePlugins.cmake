@@ -35,7 +35,7 @@ file(REMOVE_RECURSE ${XDG_ROOT})
 message("downloading plugins...")
 message("nvim -u ${INIT_LUA_PATH} --headless -c autocmd User PackerComplete quitall -c PackerInstall")
 execute_process( 
-  COMMAND "nvim" "-u" "${INIT_LUA_PATH}" "--headless" "-c" "lua =lvim.plugins" "-c" "autocmd User PackerComplete quitall" "-c" "PackerInstall"
+  COMMAND "${CMAKE_BINARY_DIR}/bin/${LVIM_BIN_NAME}" "--headless" "-c" "lua =lvim.plugins" "-c" "autocmd User PackerComplete quitall" "-c" "PackerInstall"
   TIMEOUT 300
   RESULT_VARIABLE exit_code
   OUTPUT_VARIABLE output
