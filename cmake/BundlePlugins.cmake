@@ -44,3 +44,23 @@ else()
     "$ENV{LUNARVIM_RUNTIME_DIR}/site/pack/packer/"
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim/plugins/)
 endif()
+
+
+message("nvim -u ${INIT_LUA_PATH} --headless -c autocmd User PackerComplete quitall -c PackerInstall")
+execute_process( 
+  COMMAND "nvim" "-u" "${INIT_LUA_PATH}" "--headless" "-c" "autocmd User PackerComplete quitall" "-c" "lua print(os.getenv(\"LUNARVIM_BASE_DIR\"))"  "-c" "PackerInstall"
+  TIMEOUT 50
+  RESULT_VARIABLE exit_code
+  OUTPUT_VARIABLE output
+  ERROR_VARIABLE stderr
+  OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+if(NOT exit_code EQUAL 0 )
+  message(FATAL_ERROR "nvim output: ${exit_code} ${output} ${stderr}")
+else()
+  message("nvim output: ${exit_code} ${output} ${stderr}")
+  message("download complete")
+  install(DIRECTORY 
+    "$ENV{LUNARVIM_RUNTIME_DIR}/site/pack/packer/"
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim/plugins/)
+endif()

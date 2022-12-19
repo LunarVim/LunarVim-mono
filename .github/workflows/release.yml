@@ -111,8 +111,10 @@ jobs:
         run: |
           $env:path += ";$(pwd)\\nvim-win64\\bin"
           cmake -B build
-          cmake --build build --target package
+          # cmake --build build --target package
+          ls .\build\xdg_root\share\lunarvim\site\pack\packer
           ls .\build\xdg_root\share\lunarvim\site\pack\packer\start
+          cat .\build\xdg_root\.cache\packer.nvim.log
           ls .\build\xdg_root\share\lunarvim\site\pack\packer\opt
       - uses: actions/upload-artifact@v3
         with:
