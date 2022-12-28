@@ -13,7 +13,7 @@ Set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(
   lvimRepo
   GIT_REPOSITORY https://github.com/LunarVim/LunarVim.git
-  GIT_TAG lazy-mono
+  GIT_TAG refactor/lazy
   # GIT_TAG ${LVIM_BRANCH}
   GIT_PROGRESS TRUE
 )
