@@ -12,10 +12,9 @@ include(FetchContent)
 Set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(
   lvimRepo
-  # GIT_REPOSITORY https://github.com/LunarVim/LunarVim.git
+  GIT_REPOSITORY https://github.com/LunarVim/LunarVim.git
+  GIT_TAG lazy-mono
   # GIT_TAG ${LVIM_BRANCH}
-  GIT_REPOSITORY https://github.com/LostNeophyte/LunarVim.git
-  GIT_TAG lvim-mono-integration
   GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(lvimRepo)
@@ -44,14 +43,6 @@ install(DIRECTORY
   ${lvimRepo_SOURCE_DIR}/utils
   ${lvimRepo_SOURCE_DIR}/snapshots 
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
-
-# for backwards compability
-if(EXISTS "${lvimRepo_SOURCE_DIR}/ftdetect")
-install(DIRECTORY 
-  ${lvimRepo_SOURCE_DIR}/ftdetect
-  ${lvimRepo_SOURCE_DIR}/ftplugin
-  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
-endif()
 
 # bake the lvim version into the code  TODO: find a better way to do this
 file(READ ${lvimRepo_SOURCE_DIR}/lua/lvim/utils/git.lua FILE_CONTENTS)

@@ -9,10 +9,10 @@ set(LUNARVIM_BASE_DIR ${lvimRepo_SOURCE_DIR})
 
 file(REMOVE_RECURSE ${XDG_ROOT} ${CMAKE_BINARY_DIR}/plugins)
 
-set(GEN_PLUGINS_INIT_PATH ${CMAKE_SOURCE_DIR}/scripts/gen_plugins_init.lua)
+set(INIT_LUA_PATH ${LUNARVIM_BASE_DIR}/init.lua)
   
 if(WIN32)
-  string(REPLACE "/" "\\" GEN_PLUGINS_INIT_PATH "${GEN_PLUGINS_INIT_PATH}")
+  string(REPLACE "/" "\\" INIT_LUA_PATH "${GEN_PLUGINS_INIT_PATH}")
   string(REPLACE "/" "\\" LVIM_XDG_DATA_HOME "${LVIM_XDG_DATA_HOME}")
   string(REPLACE "/" "\\" LVIM_XDG_CONFIG_HOME "${LVIM_XDG_CONFIG_HOME}")
   string(REPLACE "/" "\\" LVIM_XDG_CACHE_HOME "${LVIM_XDG_CACHE_HOME}")
@@ -32,13 +32,13 @@ set(ENV{LUNARVIM_BASE_DIR} "${LUNARVIM_BASE_DIR}")
 set(ENV{CMAKE_BINARY_DIR} "${CMAKE_BINARY_DIR}")
 set(ENV{LVIM_TEST_ENV} "true")
 
-set(DOWNLOAD_PLUGINS_CMD "nvim" "-u" "${GEN_PLUGINS_INIT_PATH}" "--headless")
+set(DOWNLOAD_PLUGINS_CMD "nvim" "-u" "${INIT_LUA_PATH}" "--headless" "-c" "quitall")
 message("downloading plugins...")
 message("${DOWNLOAD_PLUGINS_CMD}")
 
 execute_process( 
   COMMAND ${DOWNLOAD_PLUGINS_CMD}
-  TIMEOUT 300
+  TIMEOUT 120
   RESULT_VARIABLE exit_code
   OUTPUT_VARIABLE output
   ERROR_VARIABLE stderr
@@ -49,6 +49,6 @@ if(NOT exit_code EQUAL 0 )
 else()
   message("${output} ${stderr}")
   install(DIRECTORY 
-    ${CMAKE_BINARY_DIR}/plugins
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim/)
+    "${LUNARVIM_RUNTIME_DIR}/site/pack/lazy/opt/"
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim/plugins/)
 endif()
