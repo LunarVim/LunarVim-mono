@@ -12,10 +12,9 @@ include(FetchContent)
 Set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(
   lvimRepo
-  # GIT_REPOSITORY https://github.com/LunarVim/LunarVim.git
+  GIT_REPOSITORY https://github.com/LunarVim/LunarVim.git
   # GIT_TAG ${LVIM_BRANCH}
-  GIT_REPOSITORY https://github.com/LostNeophyte/LunarVim.git
-  GIT_TAG lvim-mono-integration
+  GIT_TAG refactor/lazy
   GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(lvimRepo)
