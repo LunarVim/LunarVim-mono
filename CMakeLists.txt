@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.14)
 project(lvim C)
 
 if(NOT DEFINED LVIM_BRANCH)
-  set(LVIM_BRANCH master)
+  set(LVIM_BRANCH refactor/lazy)
 endif()
 
 # Fetch LunarVim repo
@@ -13,8 +13,7 @@ Set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(
   lvimRepo
   GIT_REPOSITORY https://github.com/LunarVim/LunarVim.git
-  GIT_TAG refactor/lazy
-  # GIT_TAG ${LVIM_BRANCH}
+  GIT_TAG ${LVIM_BRANCH}
   GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(lvimRepo)
