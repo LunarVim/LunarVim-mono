@@ -41,7 +41,8 @@ install(DIRECTORY
   ${lvimRepo_SOURCE_DIR}/lua
   ${lvimRepo_SOURCE_DIR}/utils
   ${lvimRepo_SOURCE_DIR}/snapshots 
-  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
+  DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim
+  PATTERN "lua/lvim/utils/git.lua" EXCLUDE)
 
 # bake the lvim version into the code  TODO: find a better way to do this
 file(READ ${lvimRepo_SOURCE_DIR}/lua/lvim/utils/git.lua FILE_CONTENTS)
