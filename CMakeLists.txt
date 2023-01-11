@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.14)
 project(lvim C)
 
 if(NOT DEFINED LVIM_BRANCH)
-  set(LVIM_BRANCH refactor/lazy)
+  set(LVIM_BRANCH master)
 endif()
 
 # Fetch LunarVim repo
