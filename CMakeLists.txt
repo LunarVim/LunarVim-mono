@@ -61,6 +61,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   install(
     FILES ${CMAKE_SOURCE_DIR}/cmake.packaging/lvim.png
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/256x256/apps)
+  if($env{SNAP})
+    message( FATAL_ERROR "You can not do this at all, CMake will exit." )
+  endif()
+  message( FATAL_ERROR "NOOOOOOOOOOOOOOoooYou can not do this at all, CMake will exit." )
 endif()
 
 # bake the lvim version into the code  TODO: find a better way to do this
