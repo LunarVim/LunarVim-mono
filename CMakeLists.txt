@@ -54,6 +54,12 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     FILES ${lvimRepo_SOURCE_DIR}/utils/desktop/lvim.desktop
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
   install(
+    FILES ${lvimRepo_SOURCE_DIR}/utils/desktop/48x48/lvim.svg
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps)
+  install(
+    FILES ${lvimRepo_SOURCE_DIR}/utils/desktop/64x64/lvim.svg
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps)
+  install(
     FILES ${CMAKE_SOURCE_DIR}/cmake.packaging/nvim.png
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/256x256/apps)
 endif()
