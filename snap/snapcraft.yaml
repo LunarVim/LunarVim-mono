@@ -16,7 +16,7 @@ apps:
 
 parts:
   lvim:
-    source: https://github.com/lostneophyte/lunarvim-mono.git
+    source: https://github.com/lunarvim/lunarvim-mono.git
     plugin: cmake
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
