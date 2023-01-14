@@ -7,7 +7,6 @@ if(NOT DEFINED LVIM_BRANCH)
 endif()
 
 # Fetch LunarVim repo
-
 include(FetchContent)
 Set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(
@@ -25,6 +24,8 @@ include(cmake/GetVersion.cmake)
 
 include(GNUInstallDirs)
 
+# create and install lvim shim
+
 if(PACKAGE_FOR_WINDOWS OR WIN32)
   set(LVIM_BIN_NAME lvim.ps1)
 else()
@@ -34,8 +35,10 @@ endif()
 file(READ ${CMAKE_SOURCE_DIR}/bin/${LVIM_BIN_NAME} FILE_CONTENTS)
 string(REPLACE "CMAKE_INSTALL_DATAROOTDIR" "${CMAKE_INSTALL_DATAROOTDIR}" FILE_CONTENTS "${FILE_CONTENTS}")
 file(WRITE ${CMAKE_BINARY_DIR}/bin/${LVIM_BIN_NAME} "${FILE_CONTENTS}")
+
 install(PROGRAMS ${CMAKE_BINARY_DIR}/bin/${LVIM_BIN_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 
+# install the rest of the files
 install(FILES ${lvimRepo_SOURCE_DIR}/init.lua DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim)
 install(DIRECTORY 
   ${lvimRepo_SOURCE_DIR}/lua
