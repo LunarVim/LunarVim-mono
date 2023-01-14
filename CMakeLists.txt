@@ -61,7 +61,9 @@ install(FILES
   ${CMAKE_BINARY_DIR}/git.lua
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim/lua/lvim/utils/)
 
-include(cmake/BundlePlugins.cmake)
+if(BUNDLE_PLUGINS OR NOT DEFINED BUNDLE_PLUGINS)
+  include(cmake/BundlePlugins.cmake)
+endif()
 
 add_subdirectory(cmake.packaging)
 
