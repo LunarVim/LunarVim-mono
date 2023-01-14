@@ -48,7 +48,6 @@ install(DIRECTORY
   PATTERN "lua/lvim/utils/git.lua" EXCLUDE)
 
 # install desktop file
-  
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   install(
     FILES ${lvimRepo_SOURCE_DIR}/utils/desktop/lvim.desktop
@@ -60,7 +59,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     FILES ${lvimRepo_SOURCE_DIR}/utils/desktop/64x64/lvim.svg
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps)
   install(
-    FILES ${CMAKE_SOURCE_DIR}/cmake.packaging/nvim.png
+    FILES ${CMAKE_SOURCE_DIR}/cmake.packaging/lvim.png
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/256x256/apps)
 endif()
 
