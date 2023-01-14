@@ -47,6 +47,17 @@ install(DIRECTORY
   DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/lunarvim
   PATTERN "lua/lvim/utils/git.lua" EXCLUDE)
 
+# install desktop file
+  
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  install(
+    FILES ${lvimRepo_SOURCE_DIR}/utils/desktop/lvim.desktop
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
+  install(
+    FILES ${CMAKE_SOURCE_DIR}/cmake.packaging/nvim.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/256x256/apps)
+endif()
+
 # bake the lvim version into the code  TODO: find a better way to do this
 file(READ ${lvimRepo_SOURCE_DIR}/lua/lvim/utils/git.lua FILE_CONTENTS)
 string(REPLACE 
