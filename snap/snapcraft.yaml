@@ -1,13 +1,13 @@
 name: lvim # you probably want to 'snapcraft register <name>'
-base: core22 # the base snap is the execution environment for this snap
+base: core22
 adopt-info: lvim
 icon: "cmake.packaging/lvim.png"
-summary: IDE layer for Neovim. Completely free and community driven. # 79 char long summary
+summary: IDE layer for Neovim. Completely free and community driven.
 description: |
   LunarVim is an opinionated, extensible, and fast IDE layer for Neovim.
 
 grade: devel # must be 'stable' to release into candidate/stable channels
-confinement: devmode # use 'strict' once you have the right plugs and slots
+confinement: classic
 
 apps:
   lvim:
