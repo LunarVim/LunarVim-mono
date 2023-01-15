@@ -23,7 +23,7 @@ parts:
     override-pull: |
       snapcraftctl pull
       # Point icon to the correct location
-      sed -i 's|Icon=lvim|Icon=/usr/share/icons/hicolor/scalable/apps/lvim.svg' utils/desktop/lvim.desktop
+      sed -i 's|Icon=lvim|Icon=/usr/share/icons/hicolor/scalable/apps/lvim.svg|' utils/desktop/lvim.desktop
     build-packages:
       - cmake
       - git
