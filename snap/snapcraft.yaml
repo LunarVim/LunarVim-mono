@@ -20,10 +20,11 @@ parts:
     plugin: cmake
     cmake-parameters:
       - -DCMAKE_INSTALL_PREFIX=/usr
-    override-pull: |
-      snapcraftctl pull
+    override-build: |
+      craftctl default
       # Point icon to the correct location
-      sed -i 's|Icon=lvim|Icon=/usr/share/icons/hicolor/scalable/apps/lvim.svg|' utils/desktop/lvim.desktop
+      sed -i 's|Icon=lvim|Icon=/usr/share/icons/hicolor/scalable/apps/lvim.svg|' \
+        ${SNAPCRAFT_PART_INSTALL}/usr/share/applications/lvim.desktop
     build-packages:
       - cmake
       - git
