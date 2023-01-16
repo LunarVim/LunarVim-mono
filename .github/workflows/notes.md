@@ -1,5 +1,5 @@
 ```
-${TAG_NAME}/${LVIM_VERSION}
+${LVIM_VERSION}
 ```
 
 ## Install

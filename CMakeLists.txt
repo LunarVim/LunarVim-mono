@@ -3,8 +3,13 @@ cmake_minimum_required(VERSION 3.14)
 project(lvim C)
 
 if(NOT DEFINED LVIM_BRANCH)
-  set(LVIM_BRANCH master)
+  if(DEFINED ENV{LVIM_BRANCH})
+    set(LVIM_BRANCH $ENV{LVIM_BRANCH})
+  else()
+    set(LVIM_BRANCH master)
+  endif()
 endif()
+message("LVIM_BRANCH: ${LVIM_BRANCH}")
 
 # Fetch LunarVim repo
 include(FetchContent)
