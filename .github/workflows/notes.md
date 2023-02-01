@@ -11,7 +11,7 @@ ${LVIM_VERSION}
 1. Download **lvim-win64.zip**
 2. Extract the zip.
 
-#### MSI
+#### EXE
 
 1. Download **lvim-win64.exe**
 2. Run the exe
