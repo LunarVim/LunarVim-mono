@@ -96,8 +96,9 @@ jobs:
           fetch-depth: 0
       - name: Install dependencies
         run: |
+          add-apt-repository ppa:neovim-ppa/unstable
           apt-get update
-          apt-get install -y cmake autoconf automake build-essential gettext libtool-bin pkg-config unzip wget tar
+          apt-get install -y cmake autoconf automake build-essential gettext libtool-bin pkg-config unzip wget tar neovim
           wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
           tar -xzf nvim-linux64.tar.gz -C /usr/local --strip-components=1
           echo $PATH
