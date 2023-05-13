@@ -98,11 +98,9 @@ jobs:
         run: |
           apt-get update
           apt-get install -y cmake autoconf automake build-essential gettext libtool-bin pkg-config unzip
-      - name: Install neovim binary
-        uses: rhysd/action-setup-vim@v1
-        with:
-          neovim: true
-          version: stable
+          wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
+          tar -xzf nvim-linux64.tar.gz
+          export PATH="$PATH:$PWD/nvim-linux64/bin"
       - name: Build release
         id: build
         run: |
