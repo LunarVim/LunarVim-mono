@@ -99,7 +99,7 @@ jobs:
           apt-get update
           apt-get install -y cmake autoconf automake build-essential gettext libtool-bin pkg-config unzip wget tar
           wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
-          sudo tar -xzf nvim-linux64.tar.gz -C /usr/local --strip-components=1
+          tar -xzf nvim-linux64.tar.gz -C /usr/local --strip-components=1
           echo $PATH
           nvim --version
       - name: Build release
