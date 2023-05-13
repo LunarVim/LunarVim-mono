@@ -97,7 +97,7 @@ jobs:
       - name: Install dependencies
         run: |
           apt-get update
-          apt-get install -y cmake autoconf automake build-essential gettext libtool-bin pkg-config unzip
+          apt-get install -y cmake autoconf automake build-essential gettext libtool-bin pkg-config unzip wget tar
           wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
           tar -xzf nvim-linux64.tar.gz
           export PATH="$PATH:$PWD/nvim-linux64/bin"
