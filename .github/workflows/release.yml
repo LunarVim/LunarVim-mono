@@ -168,6 +168,7 @@ jobs:
         run: |
           (echo 'SUBJECT=Lvim release build';
            echo 'PRERELEASE=') >> $GITHUB_ENV
+          gh release delete $TAG_NAME --yes || true
           gh release delete stable --yes || true
           git push origin :stable || true
       # `sha256sum` outputs <sha> <path>, so we cd into each dir to drop the
