@@ -114,8 +114,6 @@ jobs:
           apt-get install -y cmake autoconf automake build-essential gettext libtool-bin pkg-config unzip wget tar curl
           wget "https://github.com/neovim/neovim/releases/download/${{ github.event.inputs.nvim_version || "stable" }}/nvim-linux64.tar.gz"
           tar -xzf nvim-linux64.tar.gz -C /usr/local --strip-components=1
-          echo $PATH
-          nvim --version
       - name: Build release
         id: build
         run: |
@@ -187,6 +185,7 @@ jobs:
         run: |
           (echo 'SUBJECT=Lvim release build';
            echo 'PRERELEASE=') >> $GITHUB_ENV
+          gh release delete $TAG_NAME --yes || true
           gh release delete stable --yes || true
           git push origin :stable || true
       # `sha256sum` outputs <sha> <path>, so we cd into each dir to drop the
