@@ -5,17 +5,26 @@ on:
   workflow_dispatch:
     inputs:
       tag_name:
-        description: "Version to release e.g. 1.2.0"
+        description: "Tag name (e.g. 1.2.0)"
+        required: true
+      nvim_version:
+        description: "Neovim version (e.g. v0.9.0)"
+        default: stable
         required: false
-        default: master
+      lvim_branch:
+        description: "Lvim branch/tag/commit to release (defaults to tag name)"
+        required: false
 
 jobs:
   linux:
     runs-on: ubuntu-22.04
     env:
-      LVIM_BRANCH: ${{ github.event.inputs.tag_name }}
+      TAG_NAME: ${{ github.event.inputs.tag_name }}
+      LVIM_BRANCH: ${{ github.event.inputs.lvim_branch }}
+      NVIM_VERSION: ${{ github.event.inputs.nvim_version }}
     outputs:
       version: ${{ steps.build.outputs.version }}
+      sem_version: ${{ steps.build.outputs.sem_version }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -28,7 +37,7 @@ jobs:
         uses: rhysd/action-setup-vim@v1
         with:
           neovim: true
-          version: stable
+          version: ${{ github.event.inputs.nvim_version || 'stable' }}
       - name: Build release
         id: build
         run: |
@@ -36,6 +45,7 @@ jobs:
           cd build
           cpack
           printf 'version=%s\n' "$(cat version.txt)" >> $GITHUB_OUTPUT
+          printf 'sem_version=%s\n' "$(cat sem_version.txt)" >> $GITHUB_OUTPUT
       - uses: actions/upload-artifact@v3
         with:
           name: lvim-linux64
@@ -47,7 +57,9 @@ jobs:
   windows:
     runs-on: ubuntu-22.04
     env:
-      LVIM_BRANCH: ${{ github.event.inputs.tag_name }}
+      TAG_NAME: ${{ github.event.inputs.tag_name }}
+      LVIM_BRANCH: ${{ github.event.inputs.lvim_branch }}
+      NVIM_VERSION: ${{ github.event.inputs.nvim_version }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -60,7 +72,7 @@ jobs:
         uses: rhysd/action-setup-vim@v1
         with:
           neovim: true
-          version: stable
+          version: ${{ github.event.inputs.nvim_version || 'stable' }}
       - name: Build release
         id: build
         run: |
@@ -78,7 +90,9 @@ jobs:
   appimage:
     runs-on: ubuntu-22.04
     env:
-      LVIM_BRANCH: ${{ github.event.inputs.tag_name }}
+      TAG_NAME: ${{ github.event.inputs.tag_name }}
+      LVIM_BRANCH: ${{ github.event.inputs.lvim_branch }}
+      NVIM_VERSION: ${{ github.event.inputs.nvim_version }}
     container:
       image: ubuntu:22.04
       options: --privileged # Privileged mode is needed to load fuse module.
@@ -98,11 +112,12 @@ jobs:
         run: |
           apt-get update
           apt-get install -y cmake autoconf automake build-essential gettext libtool-bin pkg-config unzip wget tar curl
-          wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
+          wget "https://github.com/neovim/neovim/releases/download/${{ github.event.inputs.nvim_version || 'stable' }}/nvim-linux64.tar.gz"
           tar -xzf nvim-linux64.tar.gz -C /usr/local --strip-components=1
       - name: Build release
         id: build
         run: |
+          nvim --version
           ./scripts/appimage.sh
       - uses: actions/upload-artifact@v3
         with:
@@ -114,7 +129,9 @@ jobs:
   macOS:
     runs-on: macos-12
     env:
-      LVIM_BRANCH: ${{ github.event.inputs.tag_name }}
+      TAG_NAME: ${{ github.event.inputs.tag_name }}
+      LVIM_BRANCH: ${{ github.event.inputs.lvim_branch }}
+      NVIM_VERSION: ${{ github.event.inputs.nvim_version }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -123,7 +140,7 @@ jobs:
         uses: rhysd/action-setup-vim@v1
         with:
           neovim: true
-          version: stable
+          version: ${{ github.event.inputs.nvim_version || 'stable' }}
       - name: Build release
         id: build
         run: |

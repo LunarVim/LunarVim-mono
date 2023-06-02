@@ -3,9 +3,9 @@ set -x
 set -e
 
 
-REPO_DIR=$(readlink -f "$(dirname $(realpath "$0"))/..")
+REPO_DIR=$(readlink -f "$(dirname "$(realpath "$0")")/..")
 LVIM_DIR="$REPO_DIR/build/_deps/lvimrepo-src"
-cd $REPO_DIR
+cd "$REPO_DIR"
 
 mkdir build/bin -p
 cd build
@@ -40,12 +40,15 @@ chmod 755 AppDir/AppRun
 
 # bundle NeoVim
 
-NVIM_LINK="https://github.com/neovim/neovim/releases/download/stable/nvim.appimage"
+if [ -z "$NVIM_VERSION" ]; then
+  NVIM_VERSION="stable"
+fi
+NVIM_LINK="https://github.com/neovim/neovim/releases/download/$NVIM_VERSION/nvim.appimage"
 
 if [ -e nvim.AppImage ]; then
-  curl -Lo nvim.AppImage -z nvim.AppImage $NVIM_LINK  
+  curl -Lo nvim.AppImage -z nvim.AppImage "$NVIM_LINK"  
 else
-  curl -Lo nvim.AppImage $NVIM_LINK
+  curl -Lo nvim.AppImage "$NVIM_LINK"
 fi
 chmod +x nvim.AppImage
 ./nvim.AppImage --appimage-extract
