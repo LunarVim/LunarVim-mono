@@ -37,7 +37,7 @@ jobs:
         uses: rhysd/action-setup-vim@v1
         with:
           neovim: true
-          version: ${{ github.event.inputs.nvim_version || "stable" }}
+          version: ${{ github.event.inputs.nvim_version || 'stable' }}
       - name: Build release
         id: build
         run: |
@@ -72,7 +72,7 @@ jobs:
         uses: rhysd/action-setup-vim@v1
         with:
           neovim: true
-          version: ${{ github.event.inputs.nvim_version || "stable" }}
+          version: ${{ github.event.inputs.nvim_version || 'stable' }}
       - name: Build release
         id: build
         run: |
@@ -112,7 +112,7 @@ jobs:
         run: |
           apt-get update
           apt-get install -y cmake autoconf automake build-essential gettext libtool-bin pkg-config unzip wget tar curl
-          wget "https://github.com/neovim/neovim/releases/download/${{ github.event.inputs.nvim_version || "stable" }}/nvim-linux64.tar.gz"
+          wget "https://github.com/neovim/neovim/releases/download/${{ github.event.inputs.nvim_version || 'stable' }}/nvim-linux64.tar.gz"
           tar -xzf nvim-linux64.tar.gz -C /usr/local --strip-components=1
       - name: Build release
         id: build
@@ -140,7 +140,7 @@ jobs:
         uses: rhysd/action-setup-vim@v1
         with:
           neovim: true
-          version: ${{ github.event.inputs.nvim_version || "stable" }}
+          version: ${{ github.event.inputs.nvim_version || 'stable' }}
       - name: Build release
         id: build
         run: |
