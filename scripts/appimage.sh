@@ -41,8 +41,9 @@ chmod 755 AppDir/AppRun
 # bundle NeoVim
 
 if [ -z "$NVIM_VERSION" ]; then
-  NVIM_LINK="https://github.com/neovim/neovim/releases/download/$NVIM_VERSION/nvim.appimage"
+  NVIM_VERSION="stable"
 fi
+NVIM_LINK="https://github.com/neovim/neovim/releases/download/$NVIM_VERSION/nvim.appimage"
 
 if [ -e nvim.AppImage ]; then
   curl -Lo nvim.AppImage -z nvim.AppImage "$NVIM_LINK"  

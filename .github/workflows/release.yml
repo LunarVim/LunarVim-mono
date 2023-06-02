@@ -8,7 +8,7 @@ on:
         description: "Tag name (e.g. 1.2.0)"
         required: true
       nvim_version:
-        description: "Neovim version (e.g. 0.9.0)"
+        description: "Neovim version (e.g. v0.9.0)"
         default: stable
         required: false
       lvim_branch:
