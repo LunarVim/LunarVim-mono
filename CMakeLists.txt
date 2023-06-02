@@ -2,23 +2,22 @@ cmake_minimum_required(VERSION 3.14)
 
 project(lvim C)
 
-if(NOT DEFINED LVIM_BRANCH AND DEFINED ENV{LVIM_BRANCH})
-  set(LVIM_BRANCH $ENV{LVIM_BRANCH})
-endif()
-if(NOT DEFINED LVIM_BRANCH OR "${LVIM_BRANCH}" STREQUAL "")
-  set(LVIM_BRANCH master)
+if(NOT DEFINED LVIM_BRANCH)
+    if(DEFINED ENV{LVIM_BRANCH})
+        set(LVIM_BRANCH $ENV{LVIM_BRANCH})
+    else()
+        set(LVIM_BRANCH $ENV{TAG_NAME})
+    endif()
 endif()
 
 message("LVIM_BRANCH: ${LVIM_BRANCH}")
 
 # Fetch LunarVim repo
 include(FetchContent)
-Set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(
   lvimRepo
   GIT_REPOSITORY https://github.com/LunarVim/LunarVim.git
   GIT_TAG ${LVIM_BRANCH}
-  GIT_PROGRESS TRUE
 )
 FetchContent_MakeAvailable(lvimRepo)
 set(lvimRepo_SOURCE_DIR ${CMAKE_BINARY_DIR}/_deps/lvimrepo-src)
